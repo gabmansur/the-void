@@ -1,109 +1,79 @@
-/* General Page Styles */
+/* 🌑 General Page Styles */
 body {
     background-color: black;
     color: #00ff99;
     font-family: "Courier New", monospace;
     text-align: center;
+    overflow: visible !important;
+    min-height: 100vh; /* Ensures page is tall enough */
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: flex-start; /* Fix: Start from top instead of centering */
-    min-height: 100vh; /* Prevents content from being cut */
+    justify-content: flex-start; /* Ensures content starts at the top */
     margin: 0;
-    padding-top: 50px; /* Ensures enough space at the top */
 }
 
-/* Cryptic Text (Simplified Glitch) */
-.cryptic-text {
-    font-size: 2rem; /* Smaller text */
-    color: #00ff99; /* Stays green */
-    text-shadow: 0 0 5px #00ff99, 0 0 10px black;
-    animation: flicker 1.2s infinite alternate;
-}
-
-/* Simple Flickering Effect */
-@keyframes flicker {
-    0% { opacity: 1; }
-    50% { opacity: 0.85; }
-    100% { opacity: 1; }
-}
-
-
-/* GIF */
-.gif-container img {
-    width: 500px; /* Adjust size */
-    height: auto;
-}
-
-/* Hidden YouTube Audio */
-#hidden-audio {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    left: -9999px;
-}
-
-/*  Center Candles & Buttons */
-.candle-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 20px; /* Space between the candles and button */
+/* 🔥 Glitch Text */
+.glitch-text {
+    font-size: 2.5rem;
+    text-shadow: 0 0 5px #00ff99, 0 0 10px #00ff99;
+    animation: flicker 2s infinite alternate;
     margin-top: 30px;
 }
 
-/* 🕯 Adjust Candle GIF Size */
-.candle-gif {
+/* 🔥 Flickering Effect */
+@keyframes flicker {
+    0% { opacity: 1; }
+    50% { opacity: 0.8; }
+    100% { opacity: 1; }
+}
+
+/* 🔥 Pulsing Effect */
+.praise {
+    font-size: 1rem;
+    margin-top: 20px;
+    animation: pulse 1.5s infinite alternate;
+}
+
+@keyframes pulse {
+    0% { opacity: 0.8; }
+    100% { opacity: 1; }
+}
+
+/* 🕯 Candle GIF Styling */
+.side-image {
     width: 80px; /* Adjust size */
     height: auto;
 }
 
-/* Windows 95 Button Styling (Already Exists) */
-.win95-button {
-    display: inline-block;
-    font-size: 1.2rem;
-    font-family: "MS Sans Serif", Tahoma, sans-serif;
-    color: black;
-    background: silver;
-    border: 2px solid #808080;
-    border-top: 2px solid white;
-    border-left: 2px solid white;
-    padding: 8px 16px;
-    text-decoration: none;
-    box-shadow: 2px 2px 0px gray;
-    cursor: pointer;
-    margin: 5px;
+/* ✨ Kek Statue Image */
+.small-image {
+    width: 90%;
+    max-width: 400px; /* Prevents it from being too large */
+    height: auto;
+    display: block;
+    margin: 50px auto 20px auto;
+    object-fit: contain;
 }
 
-/* 🔲 Button Press Effect */
-.win95-button:active {
-    border: 2px solid #404040;
-    border-top: 2px solid #808080;
-    border-left: 2px solid #808080;
-    box-shadow: none;
+/* ⚡️ Mobile Optimization for Kek Statue */
+@media (max-width: 768px) {
+    .small-image {
+        width: 80%;
+        max-width: 180px;
+        margin-top: 80px;
+    }
 }
 
-
-/* Centered Image */
-.image-container {
+/* 🔥 Row Layout for Side-by-Side Candles */
+.row {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 20px; /* Adjust spacing */
+    gap: 20px;
 }
 
-.image-container img {
-    width: 300px; /* Adjust size */
-    height: auto; /* Keeps proportions */
-}
-
-/* Adjusts ONLY this specific image */
-.small-image {
-    width: 150px; /* Adjust size as needed */
-    height: auto; /* Keeps aspect ratio */
-}
-
-/* Completely Hide the YouTube Audio Player */
+/* 🎵 Hide Embedded YouTube Audio Player */
 #hidden-audio {
     position: absolute;
     width: 1px;
@@ -112,70 +82,55 @@ body {
     opacity: 0;
 }
 
-/* Scrolling Prophecy Effect */
-.scroll-container {
-    width: 90%;
-    max-width: 600px;
-    margin: 30px auto;
-    background-color: rgba(0, 0, 0, 0.8);
-    padding: 20px;
-    border-radius: 10px;
-    border: 2px solid #00ff99;
+/* 🖱️ Windows 95 Style Button */
+.button {
+    padding: 10px 20px;
+    background-color: silver;
+    border: 2px solid #808080;
+    border-top: 2px solid white;
+    border-left: 2px solid white;
+    box-shadow: 2px 2px 0px gray;
+    cursor: pointer;
+    text-decoration: none;
+    color: black;
+    font-family: "MS Sans Serif", Tahoma, sans-serif;
+    font-size: 1rem;
+    display: inline-block;
     text-align: center;
-    font-size: 1.2rem;
-    color: #00ff99;
-    box-shadow: 0 0 15px #00ff99;
-    overflow-y: auto;
-    max-height: 400px;
 }
 
-/* Glowing Prophecy Header */
-.glitch-text {
-    font-size: 2rem;
-    text-shadow: 0 0 10px #00ff99, 0 0 20px #00ff99;
-    text-align: center;
-    margin-top: 20px;
+/* 🔲 Button Click Effect */
+.button:active {
+    border: 2px solid #404040;
+    border-top: 2px solid #808080;
+    border-left: 2px solid #808080;
+    box-shadow: none;
 }
 
-/* Flickering Animation */
-@keyframes flicker {
-    0% { opacity: 1; }
-    50% { opacity: 0.8; }
-    100% { opacity: 1; }
-}
-
-/* Centered GIF */
-.scrolling-gif {
-    width: 200px;
-    height: auto;
-    margin: 20px auto;
-    display: block;
-}
-
-/* Button Styling */
+/* 🏴 Centered Button Container */
 .button-container {
     display: flex;
     justify-content: center;
     gap: 15px;
+    margin-top: 20px;
+}
+
+/* 🌑 Centered Image Container */
+.image-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+    min-height: 300px; /* Ensures enough space on desktop */
+    overflow: visible !important;
     margin-top: 30px;
 }
 
-.sacred-image {
-    width: 90%; /* Keeps it responsive */
-    max-width: 500px; /* Prevents it from being too large */
-    display: block;
-    margin: 30px auto;
-    border: 2px solid #00ff99; /* Glowing green border */
-    box-shadow: 0 0 15px #00ff99; /* Gives it a mystical glow */
+/* ⚡️ Mobile Optimization for Image Container */
+@media (max-width: 768px) {
+    .image-container {
+        min-height: 200px; /* Prevents it from being too large */
+        margin-top: 20px;
+    }
 }
-
-.image-caption {
-    text-align: center;
-    font-size: 1rem;
-    color: #00ff99;
-    margin-top: 10px;
-    opacity: 0.8;
-}
-
-
-
