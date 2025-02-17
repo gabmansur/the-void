@@ -4,10 +4,68 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The Void</title>
-    <link rel="stylesheet" href="style.css">
+    <style>
+        /* General Page Styles */
+        body {
+            background-color: black;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            font-family: 'UnifrakturMaguntia', serif; /* Cryptic font */
+            text-align: center;
+        }
+
+        /* Cryptic Text */
+        .cryptic-text {
+            font-size: 3rem;
+            color: white;
+            text-shadow: 0 0 10px #00ff99;
+            animation: glitch 1.5s infinite alternate;
+        }
+
+        /* Glitchy Text Animation */
+        @keyframes glitch {
+            0% { transform: skewX(0deg); }
+            20% { transform: skewX(-10deg); }
+            40% { transform: skewX(10deg); }
+            60% { transform: skewX(-5deg); }
+            80% { transform: skewX(5deg); }
+            100% { transform: skewX(0deg); }
+        }
+
+        /* Video */
+        .video-container {
+            margin-top: 20px;
+            width: 500px; /* Adjust size */
+            height: 280px; /* Keep proportion */
+        }
+
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* Import Cryptic Font */
+        @import url('https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&display=swap');
+    </style>
 </head>
 <body>
-    <h1>Welcome to The Void</h1>
-    <p>You were not supposed to find this.</p>
+
+    <!-- Cryptic Header -->
+    <div class="cryptic-text">𝕋𝕙𝕖 𝕍𝕠𝕚𝕕 𝕚𝕤 𝕨𝕒𝕥𝕔𝕙𝕚𝕟𝕘...</div>
+
+    <!-- Video in the Center -->
+    <div class="video-container">
+        <iframe src="https://www.youtube.com/embed/1DokJjOwymM?autoplay=1&controls=0&modestbranding=1&loop=1&playlist=1DokJjOwymM" 
+            frameborder="0" 
+            allow="autoplay; encrypted-media" 
+            allowfullscreen>
+        </iframe>
+    </div>
+
 </body>
 </html>
