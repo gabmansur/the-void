@@ -118,6 +118,19 @@
             display: inline-block;
         }
 
+        .row {
+            display: flex; /* Enables side-by-side layout */
+            justify-content: center; /* Centers the items */
+            align-items: center; /* Aligns them vertically */
+            gap: 20px; /* Adds spacing between them */
+        }
+        
+        .side-image {
+            width: 200px; /* Adjust size */
+            height: auto; /* Keeps aspect ratio */
+        }
+
+
         /* Completely Hide the YouTube Audio Player */
         #hidden-audio {
             position: absolute;
@@ -138,12 +151,10 @@
 </head>
 <body>
 
-<div class="gif-container">
-  <img src="candle.gif" class="small-gif" alt="the light...">
-</div>
-
-<div class="image-container">
+<div class="row">
+    <img src="candle.gif" class="side-image" alt="candle">
     <img src="kek-statue.jpeg" class="small-image" alt="Praise Kek">
+    <img src="candle.gif" class="side-image" alt="candle">
 </div>
 
         <!-- Hidden YouTube Audio -->
