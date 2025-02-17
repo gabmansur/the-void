@@ -41,3 +41,29 @@ body {
     height: 1px;
     left: -9999px;
 }
+
+/* Windows 95 Style Button */
+.win95-button {
+    display: inline-block;
+    font-size: 1.2rem;
+    font-family: "MS Sans Serif", Tahoma, sans-serif;
+    color: black;
+    background: silver;
+    border: 2px solid #808080;
+    border-top: 2px solid white;
+    border-left: 2px solid white;
+    padding: 8px 16px;
+    text-decoration: none;
+    box-shadow: 2px 2px 0px gray;
+    cursor: pointer;
+    margin-top: 20px; /* Adds space above */
+    margin-bottom: 20px; /* Adds space below */
+}
+
+/* Click Effect (Button Pressed) */
+.win95-button:active {
+    border: 2px solid #404040;
+    border-top: 2px solid #808080;
+    border-left: 2px solid #808080;
+    box-shadow: none;
+}
