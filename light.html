@@ -75,25 +75,25 @@
         }
 
 
-        /* Resize & Center Kek Statue */
+        /* Ensure Kek Statue Image is Fully Visible */
         .small-image {
-            width: 400px; /* Adjust size */
-            height: auto;
-            display: block;
-            margin: 50px auto 20px auto;
-            max-width: 100%;
-            object-fit: contain; /* Ensures the full image is visible */
-            border: 2px solid blue; /* Debugging border */
+            width: 90%; /* Keeps it responsive */
+            max-width: 400px; /* Prevents it from being too large */
+            height: auto; /* Ensures proper aspect ratio */
+            display: block; /* Avoids extra space */
+            margin: 50px auto 20px auto; /* Centers it with space */
+            object-fit: contain; /* Ensures full image is visible */
         }
-
-
+        
         /* Mobile Optimization */
         @media (max-width: 768px) {
             .small-image {
-                width: 180px;
-                margin-top: 80px;
+                width: 80%; /* Adjust for smaller screens */
+                max-width: 180px; /* Makes it smaller on mobile */
+                margin-top: 80px; /* Adds extra space so it doesn't get cut off */
             }
         }
+
 
         .back-button {
             margin-top: 30px;
