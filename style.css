@@ -87,3 +87,13 @@ body {
     height: auto; /* Keeps aspect ratio */
 }
 
+/* Completely Hide the YouTube Audio Player */
+#hidden-audio {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    left: -9999px;
+    opacity: 0;
+}
+
+
