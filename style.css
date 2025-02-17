@@ -142,3 +142,19 @@ body {
         margin-top: 20px;
     }
 }
+
+/* 🕯 Candle & Button Container */
+.candle-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px; /* Space between candles and button */
+    margin-top: 30px;
+}
+
+/* 🔥 Candle GIF Styling */
+.side-image {
+    width: 50px; /* Adjust size */
+    height: auto;
+}
+
