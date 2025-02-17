@@ -84,27 +84,35 @@ body {
 
 /* 🖱️ Windows 95 Style Button */
 .button {
-    padding: 10px 20px;
-    background-color: silver;
+    display: inline-block;
+    font-size: 1.2rem;
+    font-family: "MS Sans Serif", Tahoma, sans-serif;
+    color: black;
+    background: silver;
     border: 2px solid #808080;
     border-top: 2px solid white;
     border-left: 2px solid white;
+    padding: 8px 16px;
+    text-decoration: none;
     box-shadow: 2px 2px 0px gray;
     cursor: pointer;
-    text-decoration: none;
-    color: black;
-    font-family: "MS Sans Serif", Tahoma, sans-serif;
-    font-size: 1rem;
-    display: inline-block;
-    text-align: center;
+    margin: 10px;
 }
 
-/* 🔲 Button Click Effect */
+/* 🔲 Button Press Effect (Clicked State) */
 .button:active {
     border: 2px solid #404040;
     border-top: 2px solid #808080;
     border-left: 2px solid #808080;
     box-shadow: none;
+}
+
+/* 🏴 Centered Button Container */
+.button-container {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 20px;
 }
 
 /* 🏴 Centered Button Container */
