@@ -67,3 +67,17 @@ body {
     border-left: 2px solid #808080;
     box-shadow: none;
 }
+
+/* Centered Image */
+.image-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px; /* Adjust spacing */
+}
+
+.image-container img {
+    width: 300px; /* Adjust size */
+    height: auto; /* Keeps proportions */
+}
+
