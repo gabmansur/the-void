@@ -40,12 +40,12 @@
         .video-container {
             margin-top: 20px;
             width: 500px; /* Adjust size */
-            height: 280px; /* Keep proportion */
+            height: auto;
         }
 
-        iframe {
+        video {
             width: 100%;
-            height: 100%;
+            height: auto;
             border: none;
         }
 
@@ -58,13 +58,12 @@
     <!-- Cryptic Header -->
     <div class="cryptic-text">𝕋𝕙𝕖 𝕍𝕠𝕚𝕕 𝕚𝕤 𝕨𝕒𝕥𝕔𝕙𝕚𝕟𝕘...</div>
 
-    <!-- Video in the Center -->
+    <!-- Self-Hosted Video -->
     <div class="video-container">
-        <iframe src="https://www.youtube.com/embed/1DokJjOwymM?autoplay=1&controls=0&modestbranding=1&loop=1&playlist=1DokJjOwymM" 
-            frameborder="0" 
-            allow="autoplay; encrypted-media" 
-            allowfullscreen>
-        </iframe>
+        <video controls autoplay loop muted>
+            <source src="hellotraveller.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
     </div>
 
 </body>
