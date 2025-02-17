@@ -1,6 +1,44 @@
+/* General Page Styles */
 body {
     background-color: black;
     color: #00ff99;
     font-family: "Courier New", monospace;
     text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+}
+
+/* Cryptic Text */
+.cryptic-text {
+    font-size: 3rem;
+    text-shadow: 0 0 10px #00ff99;
+    animation: glitch 1.5s infinite alternate;
+}
+
+/* Glitchy Text Animation */
+@keyframes glitch {
+    0% { transform: skewX(0deg); }
+    20% { transform: skewX(-10deg); }
+    40% { transform: skewX(10deg); }
+    60% { transform: skewX(-5deg); }
+    80% { transform: skewX(5deg); }
+    100% { transform: skewX(0deg); }
+}
+
+/* GIF */
+.gif-container img {
+    width: 500px; /* Adjust size */
+    height: auto;
+}
+
+/* Hidden YouTube Audio */
+#hidden-audio {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    left: -9999px;
 }
