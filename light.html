@@ -60,12 +60,14 @@
             height: auto;
         }
 
-        /* Center & Add Margin to Kek Statue */
         .image-container {
             display: flex;
             justify-content: center;
             align-items: center;
-            margin-top: 100px; /* Adds space at the top */
+            flex-direction: column;
+            width: 100%; /* Ensures it doesn't cut off */
+            overflow: visible; /* Prevents cropping */
+            margin-top: 50px;
         }
 
         /* Resize & Center Kek Statue */
