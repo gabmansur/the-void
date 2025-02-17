@@ -43,7 +43,22 @@ body {
     left: -9999px;
 }
 
-/* Windows 95 Style Button */
+/*  Center Candles & Buttons */
+.candle-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px; /* Space between the candles and button */
+    margin-top: 30px;
+}
+
+/* 🕯 Adjust Candle GIF Size */
+.candle-gif {
+    width: 50px; /* Adjust size */
+    height: auto;
+}
+
+/* Windows 95 Button Styling (Already Exists) */
 .win95-button {
     display: inline-block;
     font-size: 1.2rem;
@@ -57,17 +72,17 @@ body {
     text-decoration: none;
     box-shadow: 2px 2px 0px gray;
     cursor: pointer;
-    margin-top: 20px; /* Adds space above */
-    margin-bottom: 20px; /* Adds space below */
+    margin: 5px;
 }
 
-/* Click Effect (Button Pressed) */
+/* 🔲 Button Press Effect */
 .win95-button:active {
     border: 2px solid #404040;
     border-top: 2px solid #808080;
     border-left: 2px solid #808080;
     box-shadow: none;
 }
+
 
 /* Centered Image */
 .image-container {
