@@ -101,23 +101,6 @@
             }
         }
 
-
-        .back-button {
-            margin-top: 30px;
-            padding: 10px 20px;
-            background-color: silver;
-            border: 2px solid #808080;
-            border-top: 2px solid white;
-            border-left: 2px solid white;
-            box-shadow: 2px 2px 0px gray;
-            cursor: pointer;
-            text-decoration: none;
-            color: black;
-            font-family: "MS Sans Serif", Tahoma, sans-serif;
-            font-size: 1rem;
-            display: inline-block;
-        }
-
         .row {
             display: flex; /* Enables side-by-side layout */
             justify-content: center; /* Centers the items */
@@ -140,13 +123,41 @@
             opacity: 0;
         }
 
-
-        .back-button:active {
+        /* Flexbox for Side-by-Side Buttons */
+        .button-container {
+            display: flex;
+            justify-content: center; /* Centers them */
+            gap: 15px; /* Adds spacing between buttons */
+            margin-top: 20px;
+        }
+        
+        /* Windows 95 Style Button */
+        .button {
+            padding: 10px 20px;
+            background-color: silver;
+            border: 2px solid #808080;
+            border-top: 2px solid white;
+            border-left: 2px solid white;
+            box-shadow: 2px 2px 0px gray;
+            cursor: pointer;
+            text-decoration: none;
+            color: black;
+            font-family: "MS Sans Serif", Tahoma, sans-serif;
+            font-size: 1rem;
+            display: inline-block; /* Allows it to sit side by side */
+            text-align: center;
+        }
+        
+        /* Button Click Effect */
+        .button:active {
             border: 2px solid #404040;
             border-top: 2px solid #808080;
             border-left: 2px solid #808080;
             box-shadow: none;
         }
+
+
+
     </style>
 </head>
 <body>
@@ -186,8 +197,14 @@
 <div class="gif-container">
     <img src="candle.gif" class="small-gif" alt="the light...">
 </div>
+
+<div class="button-container">
+    <a href="index.html" class="button">Return to the Void...</a>
+    <a href="light2.html" class="button">... Keep going</a>
+</div>
     
-    <a href="index.html" class="back-button">Return to the Void...</a>
+
+
 
 </body>
     
