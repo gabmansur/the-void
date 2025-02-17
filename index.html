@@ -4,71 +4,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The Void</title>
-    <style>
-        /* General Page Styles */
-        body {
-            background-color: black;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            margin: 0;
-            font-family: 'UnifrakturMaguntia', serif; /* Cryptic font */
-            text-align: center;
-        }
-
-        /* Cryptic Text */
-        .cryptic-text {
-            font-size: 3rem;
-            color: white;
-            text-shadow: 0 0 10px #00ff99;
-            animation: glitch 1.5s infinite alternate;
-        }
-
-        /* Glitchy Text Animation */
-        @keyframes glitch {
-            0% { transform: skewX(0deg); }
-            20% { transform: skewX(-10deg); }
-            40% { transform: skewX(10deg); }
-            60% { transform: skewX(-5deg); }
-            80% { transform: skewX(5deg); }
-            100% { transform: skewX(0deg); }
-        }
-
-        /* Video */
-        .video-container {
-            margin-top: 20px;
-            width: 500px; /* Adjust size */
-            height: auto;
-        }
-
-        video {
-            width: 100%;
-            height: auto;
-            border: none;
-        }
-
-        /* Import Cryptic Font */
-        @import url('https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&display=swap');
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
     <!-- Cryptic Header -->
     <div class="cryptic-text">𝕋𝕙𝕖 𝕍𝕠𝕚𝕕 𝕚𝕤 𝕨𝕒𝕥𝕔𝕙𝕚𝕟𝕘...</div>
 
-<iframe id="hidden-audio"
-    src="https://www.youtube.com/embed/1DokJjOwymM?autoplay=1&loop=1&playlist=1DokJjOwymM&controls=0&showinfo=0"
-    frameborder="0"
-    allow="autoplay"
-    style="position: absolute; width: 1px; height: 1px; left: -9999px;">
-</iframe>
-    
-<div class="gif-container">
-    <img src="welcometraveller.gif" alt="Glitching GIF">
-</div>
+    <!-- Hidden YouTube Audio -->
+    <iframe id="hidden-audio"
+        src="https://www.youtube.com/embed/1DokJjOwymM?autoplay=1&loop=1&playlist=1DokJjOwymM&controls=0&showinfo=0"
+        frameborder="0"
+        allow="autoplay">
+    </iframe>
 
+    <!-- GIF in Place of Video -->
+    <div class="gif-container">
+        <img src="welcometraveller.gif" alt="Glitching GIF">
+    </div>
 
 </body>
 </html>
+
