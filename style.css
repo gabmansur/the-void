@@ -7,9 +7,10 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    height: 100vh;
+    justify-content: flex-start; /* Fix: Start from top instead of centering */
+    min-height: 100vh; /* Prevents content from being cut */
     margin: 0;
+    padding-top: 50px; /* Ensures enough space at the top */
 }
 
 /* Cryptic Text (Simplified Glitch) */
