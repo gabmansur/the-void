@@ -67,11 +67,18 @@
             justify-content: center;
             align-items: center;
             flex-direction: column;
-            width: 100%; /* Ensures it takes full width */
-            min-height: 400px; /* Makes sure it has enough space */
-            overflow: visible !important; /* Prevents cropping */
+            width: 100%;
+            min-height: 400px; /* Ensures enough space on desktop */
+            overflow: visible !important;
             margin-top: 50px;
-            border: 2px solid red; /* Debugging border */
+        }
+        
+        /* Mobile Fix: Reduce Excessive Height */
+        @media (max-width: 768px) {
+            .image-container {
+                min-height: 200px; /* Prevents container from being too large */
+                margin-top: 20px; /* Moves it higher so it's visible */
+            }
         }
 
 
