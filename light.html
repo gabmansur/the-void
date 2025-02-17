@@ -31,7 +31,7 @@
         }
 
         .praise {
-            font-size: 1.5rem;
+            font-size: 1rem;
             margin-top: 20px;
             animation: pulse 1.5s infinite alternate;
         }
@@ -60,6 +60,28 @@
             height: auto;
         }
 
+        /* Center & Add Margin to Kek Statue */
+        .image-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 50px; /* Adds space at the top */
+        }
+
+        /* Resize & Center Kek Statue */
+        .small-image {
+            width: 250px; /* Adjust size as needed */
+            height: auto; /* Keeps proportions */
+            display: block; /* Prevents extra spacing issues */
+            margin: 50px auto 20px auto; /* Adds space at the top, centers it */
+        }
+
+        /* Responsive Fix: Add Extra Space on Mobile */
+        @media (max-width: 768px) {
+            .image-container {
+                margin-top: 100px; /* More space on small screens */
+            }
+}
 
         .back-button {
             margin-top: 30px;
