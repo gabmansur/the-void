@@ -96,4 +96,70 @@ body {
     opacity: 0;
 }
 
+/* Scrolling Prophecy Effect */
+.scroll-container {
+    width: 90%;
+    max-width: 600px;
+    margin: 30px auto;
+    background-color: rgba(0, 0, 0, 0.8);
+    padding: 20px;
+    border-radius: 10px;
+    border: 2px solid #00ff99;
+    text-align: center;
+    font-size: 1.2rem;
+    color: #00ff99;
+    box-shadow: 0 0 15px #00ff99;
+    overflow-y: auto;
+    max-height: 400px;
+}
+
+/* Glowing Prophecy Header */
+.glitch-text {
+    font-size: 2rem;
+    text-shadow: 0 0 10px #00ff99, 0 0 20px #00ff99;
+    text-align: center;
+    margin-top: 20px;
+}
+
+/* Flickering Animation */
+@keyframes flicker {
+    0% { opacity: 1; }
+    50% { opacity: 0.8; }
+    100% { opacity: 1; }
+}
+
+/* Centered GIF */
+.scrolling-gif {
+    width: 200px;
+    height: auto;
+    margin: 20px auto;
+    display: block;
+}
+
+/* Button Styling */
+.button-container {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 30px;
+}
+
+.sacred-image {
+    width: 90%; /* Keeps it responsive */
+    max-width: 500px; /* Prevents it from being too large */
+    display: block;
+    margin: 30px auto;
+    border: 2px solid #00ff99; /* Glowing green border */
+    box-shadow: 0 0 15px #00ff99; /* Gives it a mystical glow */
+}
+
+.image-caption {
+    text-align: center;
+    font-size: 1rem;
+    color: #00ff99;
+    margin-top: 10px;
+    opacity: 0.8;
+}
+
+
 
