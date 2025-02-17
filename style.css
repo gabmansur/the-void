@@ -158,3 +158,13 @@ body {
     height: auto;
 }
 
+/* 🌑 Center Only the Index Page */
+.index-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    min-height: 100vh; /* Full viewport height */
+    width: 100%;
+}
