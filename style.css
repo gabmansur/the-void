@@ -81,3 +81,9 @@ body {
     height: auto; /* Keeps proportions */
 }
 
+/* Adjusts ONLY this specific image */
+.small-image {
+    width: 150px; /* Adjust size as needed */
+    height: auto; /* Keeps aspect ratio */
+}
+
