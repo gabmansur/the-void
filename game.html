@@ -20,12 +20,36 @@
             max-width: 100%;
             max-height: 100vh;
             touch-action: none;
+            display: none; /* Hidden until name entered */
+        }
+        #namePrompt {
+            position: absolute;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        #nameInput {
+            margin: 10px;
+            padding: 5px;
+            font-size: 16px;
+        }
+        #startButton {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
         }
     </style>
 </head>
 <body>
-    Work in progress, kek. <br> Please bear with me. <br> The game mechanics is made by Grok 3 btw and its amazing. <br> Just need to plug in the right graphics <br> praise kek! <br>
     <canvas id="gameCanvas" width="612" height="367"></canvas>
+    <div id="namePrompt">
+        <h2>Enter Your Name</h2>
+        <input type="text" id="nameInput" maxlength="20" placeholder="Your Name">
+        <br>
+        <button id="startButton">Start Game</button>
+    </div>
     <script src="game.js"></script>
 </body>
 </html>
