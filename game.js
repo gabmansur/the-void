@@ -1,3 +1,19 @@
+// Your Firebase configuration
+const firebaseConfig = {
+    apiKey: "AIzaSyCnllqG2Q3b3ZoBcZKm7c5Ob-LUrKRTaH4",
+    authDomain: "flappy-kekius.firebaseapp.com",
+    projectId: "flappy-kekius",
+    storageBucket: "flappy-kekius.firebasestorage.app",
+    messagingSenderId: "454603492899",
+    appId: "1:454603492899:web:6d810fd39e64c5e8a3eb96",
+    databaseURL: "https://flappy-kekius-default-rtdb.europe-west1.firebasedatabase.app/"
+};
+
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
+const leaderboardRef = db.ref("leaderboard");
+
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
 const namePrompt = document.getElementById("namePrompt");
@@ -8,9 +24,9 @@ const startButton = document.getElementById("startButton");
 const BASE_WIDTH = 612;
 const BASE_HEIGHT = 367;
 const GRAVITY = 0.5;
-const JUMP = -7;
+const JUMP = -8;
 const PILLAR_WIDTH = 20;
-const PILLAR_GAP = 110;
+const PILLAR_GAP = 80;
 const PILLAR_SPEED = 4;
 const PILLAR_SPACING = 300;
 const BG_SPEED = 1.5;
@@ -56,9 +72,14 @@ let highScore = 0;
 let gameOver = false;
 let lastPillarX = BASE_WIDTH;
 let playerName = "";
+let leaderboard = [];
 
-// Leaderboard
-let leaderboard = JSON.parse(localStorage.getItem("leaderboard")) || [];
+// Fetch initial leaderboard
+leaderboardRef.on("value", (snapshot) => {
+    const data = snapshot.val();
+    leaderboard = data ? Object.values(data) : [];
+    leaderboard.sort((a, b) => b.score - a.score);
+});
 
 // Name prompt
 startButton.addEventListener("click", () => {
@@ -145,7 +166,6 @@ function update(delta, timestamp) {
             rectCollision(playerRect, { x: pillar.x, y: bottomY, width: PILLAR_WIDTH, height: bottomHeight })) {
             gameOver = true;
             updateHighScoreAndLeaderboard();
-            console.log(`Pillar: Top 0-${pillar.topHeight}, Gap ${pillar.topHeight}-${bottomY}, Bottom ${bottomY}-${BASE_HEIGHT}`);
         }
     });
     coins = coins.filter(coin => {
@@ -232,7 +252,7 @@ function draw(timestamp) {
         ctx.fillStyle = "red";
         ctx.fillText("Vae Victis! Tap or Press R to Retry", BASE_WIDTH / 2 - 140, BASE_HEIGHT / 2 - 70);
         ctx.font = "16px Arial";
-        ctx.fillText("Leaderboard:", BASE_WIDTH / 2 - 40, BASE_HEIGHT / 2 - 40);
+        ctx.fillText("Global Leaderboard:", BASE_WIDTH / 2 - 60, BASE_HEIGHT / 2 - 40);
         leaderboard.slice(0, 5).forEach((entry, i) => {
             ctx.fillText(`${i + 1}. ${entry.name}: ${entry.score}`, BASE_WIDTH / 2 - 80, BASE_HEIGHT / 2 - 20 + i * 20);
         });
@@ -247,14 +267,14 @@ function rectCollision(rect1, rect2) {
 }
 
 function updateHighScoreAndLeaderboard() {
+    // Local high score
     if (score > highScore) {
         highScore = score;
         localStorage.setItem(`highScore_${playerName}`, highScore);
     }
-    leaderboard.push({ name: playerName, score: score });
-    leaderboard.sort((a, b) => b.score - a.score); // Descending order
-    leaderboard = leaderboard.slice(0, 5); // Top 5
-    localStorage.setItem("leaderboard", JSON.stringify(leaderboard));
+    // Global leaderboard
+    const leaderboardEntry = { name: playerName, score: score };
+    leaderboardRef.push(leaderboardEntry);
 }
 
 function resetGame() {
