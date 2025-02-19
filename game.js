@@ -6,16 +6,17 @@ const BASE_WIDTH = 612;
 const BASE_HEIGHT = 367;
 const GRAVITY = 0.5;
 const JUMP = -8;
-const PILLAR_WIDTH = 50;
-const PILLAR_GAP = 160;
+const PILLAR_WIDTH = 30;  // Smaller pillars
+const PILLAR_GAP = 100;   // Adjusted gap for smaller Kekius
 const PILLAR_SPEED = 4;
 const BG_SPEED = 1.5;
+const PLAYER_SIZE = 40;   // Smaller Kekius
 
-// Load images (adjust paths to your hosted/local files)
+// Load images (adjust paths)
 const playerImg = new Image();
-playerImg.src = "image/kekius.png"; // 60x60
+playerImg.src = "image/kekius.png"; // 40x40
 const pillarImg = new Image();
-pillarImg.src = "image/pillar.png"; // 50x367
+pillarImg.src = "image/pillar.png"; // 30x367
 const coinImg = new Image();
 coinImg.src = "image/coin.png"; // 20x20
 const bgImg = new Image();
@@ -39,10 +40,10 @@ let player = {
     x: 150,
     y: BASE_HEIGHT / 2,
     vel: 0,
-    width: 60,
-    height: 60
+    width: PLAYER_SIZE,
+    height: PLAYER_SIZE
 };
-let pillars = [{ x: BASE_WIDTH, topHeight: Math.floor(Math.random() * (BASE_HEIGHT - PILLAR_GAP - 50)) + 50 }];
+let pillars = [{ x: BASE_WIDTH, topHeight: Math.floor(Math.random() * (BASE_HEIGHT - PILLAR_GAP - 30)) + 30 }];
 let coins = [];
 let bgX = 0;
 let score = 0;
@@ -52,7 +53,7 @@ let gameOver = false;
 document.addEventListener("keydown", (e) => {
     if (e.code === "Space" && !gameOver) {
         player.vel = JUMP;
-        e.preventDefault(); // Prevent scrolling
+        e.preventDefault();
     } else if (e.code === "KeyR" && gameOver) {
         resetGame();
     }
@@ -63,14 +64,14 @@ canvas.addEventListener("touchstart", (e) => {
     } else if (gameOver) {
         resetGame();
     }
-    e.preventDefault(); // Prevent scrolling/zooming
+    e.preventDefault();
 }, { passive: false });
 
 // Game loop
 let lastTime = 0;
 function gameLoop(timestamp) {
     if (!lastTime) lastTime = timestamp;
-    const delta = Math.min((timestamp - lastTime) / 16.67, 2); // Cap delta at ~2 frames
+    const delta = Math.min((timestamp - lastTime) / 16.67, 2);
     lastTime = timestamp;
 
     if (!gameOver) {
@@ -98,7 +99,7 @@ function update(delta) {
         score++;
     }
     if (Math.random() < 0.01 * delta) {
-        pillars.push({ x: BASE_WIDTH, topHeight: Math.floor(Math.random() * (BASE_HEIGHT - PILLAR_GAP - 50)) + 50 });
+        pillars.push({ x: BASE_WIDTH, topHeight: Math.floor(Math.random() * (BASE_HEIGHT - PILLAR_GAP - 30)) + 30 });
     }
 
     // Coins
@@ -107,7 +108,7 @@ function update(delta) {
     });
     coins = coins.filter(coin => coin.x > -20);
     if (Math.random() < 0.02 * delta) {
-        coins.push({ x: BASE_WIDTH, y: Math.floor(Math.random() * (BASE_HEIGHT - 80)) + 40 });
+        coins.push({ x: BASE_WIDTH, y: Math.floor(Math.random() * (BASE_HEIGHT - 60)) + 30 });
     }
 
     // Collisions
@@ -131,7 +132,7 @@ function update(delta) {
 }
 
 function draw() {
-    ctx.clearRect(0, 0, BASE_WIDTH, BASE_HEIGHT); // Clear scaled canvas
+    ctx.clearRect(0, 0, BASE_WIDTH, BASE_HEIGHT);
     // Background
     ctx.drawImage(bgImg, bgX, 0, BASE_WIDTH * 2, BASE_HEIGHT);
     ctx.drawImage(bgImg, bgX + BASE_WIDTH, 0, BASE_WIDTH * 2, BASE_HEIGHT);
@@ -171,7 +172,7 @@ function rectCollision(rect1, rect2) {
 function resetGame() {
     player.y = BASE_HEIGHT / 2;
     player.vel = 0;
-    pillars = [{ x: BASE_WIDTH, topHeight: Math.floor(Math.random() * (BASE_HEIGHT - PILLAR_GAP - 50)) + 50 }];
+    pillars = [{ x: BASE_WIDTH, topHeight: Math.floor(Math.random() * (BASE_HEIGHT - PILLAR_GAP - 30)) + 30 }];
     coins = [];
     score = 0;
     gameOver = false;
