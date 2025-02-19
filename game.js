@@ -2,8 +2,8 @@ const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
 
 // Game constants
-const WIDTH = 612;
-const HEIGHT = 367;
+const BASE_WIDTH = 612;
+const BASE_HEIGHT = 367;
 const GRAVITY = 0.5;
 const JUMP = -8;
 const PILLAR_WIDTH = 50;
@@ -13,42 +13,64 @@ const BG_SPEED = 1.5;
 
 // Load images (adjust paths to your hosted/local files)
 const playerImg = new Image();
-playerImg.src = "image/kekius.png"; // 60x60
+playerImg.src = "kekius.png"; // 60x60
 const pillarImg = new Image();
-pillarImg.src = "image/pillar.png"; // 50x367 (will be cropped)
+pillarImg.src = "pillar.png"; // 50x367
 const coinImg = new Image();
-coinImg.src = "image/coin.png"; // 20x20
+coinImg.src = "coin.png"; // 20x20
 const bgImg = new Image();
-bgImg.src = "image/rome_bg.png"; // 1224x367
+bgImg.src = "rome_bg.png"; // 1224x367
+
+// Responsive scaling
+let scale = 1;
+function resizeCanvas() {
+    const maxWidth = window.innerWidth * 0.95;
+    const maxHeight = window.innerHeight * 0.95;
+    scale = Math.min(maxWidth / BASE_WIDTH, maxHeight / BASE_HEIGHT);
+    canvas.width = BASE_WIDTH * scale;
+    canvas.height = BASE_HEIGHT * scale;
+    ctx.scale(scale, scale);
+}
+window.addEventListener("resize", resizeCanvas);
+resizeCanvas();
 
 // Game objects
 let player = {
     x: 150,
-    y: HEIGHT / 2,
+    y: BASE_HEIGHT / 2,
     vel: 0,
     width: 60,
     height: 60
 };
-let pillars = [{ x: WIDTH, topHeight: Math.floor(Math.random() * (HEIGHT - PILLAR_GAP - 50)) + 50 }];
+let pillars = [{ x: BASE_WIDTH, topHeight: Math.floor(Math.random() * (BASE_HEIGHT - PILLAR_GAP - 50)) + 50 }];
 let coins = [];
 let bgX = 0;
 let score = 0;
 let gameOver = false;
 
-// Event listeners
+// Controls
 document.addEventListener("keydown", (e) => {
     if (e.code === "Space" && !gameOver) {
         player.vel = JUMP;
+        e.preventDefault(); // Prevent scrolling
     } else if (e.code === "KeyR" && gameOver) {
         resetGame();
     }
 });
+canvas.addEventListener("touchstart", (e) => {
+    if (!gameOver) {
+        player.vel = JUMP;
+    } else if (gameOver) {
+        resetGame();
+    }
+    e.preventDefault(); // Prevent scrolling/zooming
+}, { passive: false });
 
 // Game loop
 let lastTime = 0;
 function gameLoop(timestamp) {
     if (!lastTime) lastTime = timestamp;
-    const delta = (timestamp - lastTime) / 16.67; // Normalize to ~60 FPS
+    const delta = Math.min((timestamp - lastTime) / 16.67, 2); // Cap delta at ~2 frames
     lastTime = timestamp;
 
     if (!gameOver) {
@@ -65,7 +87,7 @@ function update(delta) {
 
     // Background
     bgX -= BG_SPEED * delta;
-    if (bgX <= -WIDTH) bgX = 0;
+    if (bgX <= -BASE_WIDTH) bgX = 0;
 
     // Pillars
     pillars.forEach(pillar => {
@@ -75,8 +97,8 @@ function update(delta) {
         pillars.shift();
         score++;
     }
-    if (Math.random() < 0.01 * delta) { // ~300 frames at 60 FPS
-        pillars.push({ x: WIDTH, topHeight: Math.floor(Math.random() * (HEIGHT - PILLAR_GAP - 50)) + 50 });
+    if (Math.random() < 0.01 * delta) {
+        pillars.push({ x: BASE_WIDTH, topHeight: Math.floor(Math.random() * (BASE_HEIGHT - PILLAR_GAP - 50)) + 50 });
     }
 
     // Coins
@@ -84,15 +106,15 @@ function update(delta) {
         coin.x -= PILLAR_SPEED * delta;
     });
     coins = coins.filter(coin => coin.x > -20);
-    if (Math.random() < 0.02 * delta) { // ~100 frames at 60 FPS
-        coins.push({ x: WIDTH, y: Math.floor(Math.random() * (HEIGHT - 80)) + 40 });
+    if (Math.random() < 0.02 * delta) {
+        coins.push({ x: BASE_WIDTH, y: Math.floor(Math.random() * (BASE_HEIGHT - 80)) + 40 });
     }
 
     // Collisions
     const playerRect = { x: player.x, y: player.y, width: player.width, height: player.height };
     pillars.forEach(pillar => {
         const bottomY = pillar.topHeight + PILLAR_GAP;
-        const bottomHeight = HEIGHT - bottomY;
+        const bottomHeight = BASE_HEIGHT - bottomY;
         if (rectCollision(playerRect, { x: pillar.x, y: 0, width: PILLAR_WIDTH, height: pillar.topHeight }) ||
             rectCollision(playerRect, { x: pillar.x, y: bottomY, width: PILLAR_WIDTH, height: bottomHeight })) {
             gameOver = true;
@@ -105,18 +127,19 @@ function update(delta) {
         }
         return true;
     });
-    if (player.y < 0 || player.y + player.height > HEIGHT) gameOver = true;
+    if (player.y < 0 || player.y + player.height > BASE_HEIGHT) gameOver = true;
 }
 
 function draw() {
+    ctx.clearRect(0, 0, BASE_WIDTH, BASE_HEIGHT); // Clear scaled canvas
     // Background
-    ctx.drawImage(bgImg, bgX, 0, WIDTH * 2, HEIGHT);
-    ctx.drawImage(bgImg, bgX + WIDTH, 0, WIDTH * 2, HEIGHT);
+    ctx.drawImage(bgImg, bgX, 0, BASE_WIDTH * 2, BASE_HEIGHT);
+    ctx.drawImage(bgImg, bgX + BASE_WIDTH, 0, BASE_WIDTH * 2, BASE_HEIGHT);
 
     // Pillars
     pillars.forEach(pillar => {
         const bottomY = pillar.topHeight + PILLAR_GAP;
-        const bottomHeight = HEIGHT - bottomY;
+        const bottomHeight = BASE_HEIGHT - bottomY;
         ctx.drawImage(pillarImg, 0, 0, PILLAR_WIDTH, pillar.topHeight, pillar.x, 0, PILLAR_WIDTH, pillar.topHeight);
         ctx.drawImage(pillarImg, 0, 0, PILLAR_WIDTH, bottomHeight, pillar.x, bottomY, PILLAR_WIDTH, bottomHeight);
     });
@@ -134,7 +157,7 @@ function draw() {
 
     // Game Over
     if (gameOver) {
-        ctx.fillText("Vae Victis! Press R to Retry", WIDTH / 2 - 120, HEIGHT / 2);
+        ctx.fillText("Vae Victis! Tap or Press R to Retry", BASE_WIDTH / 2 - 150, BASE_HEIGHT / 2);
     }
 }
 
@@ -146,13 +169,13 @@ function rectCollision(rect1, rect2) {
 }
 
 function resetGame() {
-    player.y = HEIGHT / 2;
+    player.y = BASE_HEIGHT / 2;
     player.vel = 0;
-    pillars = [{ x: WIDTH, topHeight: Math.floor(Math.random() * (HEIGHT - PILLAR_GAP - 50)) + 50 }];
+    pillars = [{ x: BASE_WIDTH, topHeight: Math.floor(Math.random() * (BASE_HEIGHT - PILLAR_GAP - 50)) + 50 }];
     coins = [];
     score = 0;
     gameOver = false;
 }
 
 // Start the game
-playerImg.onload = () => requestAnimationFrame(gameLoop); // Wait for player image to load
+playerImg.onload = () => requestAnimationFrame(gameLoop);
