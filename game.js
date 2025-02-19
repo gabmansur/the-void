@@ -9,14 +9,16 @@ const JUMP = -8;
 const PILLAR_WIDTH = 20;
 const PILLAR_GAP = 80;
 const PILLAR_SPEED = 4;
+const PILLAR_SPACING = 300;
 const BG_SPEED = 1.5;
 const PLAYER_SIZE = 32;
+const KEK_DURATION = 500; // 0.5 seconds in milliseconds
 
 // Load images from image/ folder
 const playerImg = new Image();
 playerImg.src = "image/kekius.png"; // 156x156 source, render at 32x32
 const pillarImg = new Image();
-pillarImg.src = "image/pillar.png"; // 236x600 source, render at 20x367
+pillarImg.src = "image/pillar.png"; // 236x600 source, render at 20xdynamic
 const coinImg = new Image();
 coinImg.src = "image/coin.png"; // 20x20
 const bgImg = new Image();
@@ -45,9 +47,11 @@ let player = {
 };
 let pillars = [{ x: BASE_WIDTH, topHeight: Math.floor(Math.random() * (BASE_HEIGHT - PILLAR_GAP - 20)) + 20 }];
 let coins = [];
+let keks = []; // Array for "KEK" popups
 let bgX = 0;
 let score = 0;
 let gameOver = false;
+let lastPillarX = BASE_WIDTH;
 
 // Controls
 document.addEventListener("keydown", (e) => {
@@ -75,13 +79,13 @@ function gameLoop(timestamp) {
     lastTime = timestamp;
 
     if (!gameOver) {
-        update(delta);
+        update(delta, timestamp);
     }
-    draw();
+    draw(timestamp);
     requestAnimationFrame(gameLoop);
 }
 
-function update(delta) {
+function update(delta, timestamp) {
     // Player
     player.vel += GRAVITY * delta;
     player.y += player.vel * delta;
@@ -98,8 +102,9 @@ function update(delta) {
         pillars.shift();
         score++;
     }
-    if (Math.random() < 0.01 * delta) {
-        pillars.push({ x: BASE_WIDTH, topHeight: Math.floor(Math.random() * (BASE_HEIGHT - PILLAR_GAP - 20)) + 20 });
+    if (lastPillarX - pillars[pillars.length - 1].x >= PILLAR_SPACING) {
+        pillars.push({ x: lastPillarX, topHeight: Math.floor(Math.random() * (BASE_HEIGHT - PILLAR_GAP - 20)) + 20 });
+        lastPillarX = pillars[pillars.length - 1].x;
     }
 
     // Coins
@@ -110,6 +115,9 @@ function update(delta) {
     if (Math.random() < 0.02 * delta) {
         coins.push({ x: BASE_WIDTH, y: Math.floor(Math.random() * (BASE_HEIGHT - 40)) + 20 });
     }
+
+    // KEK popups
+    keks = keks.filter(kek => timestamp < kek.expiry);
 
     // Collisions
     const playerRect = { x: player.x, y: player.y, width: player.width, height: player.height };
@@ -125,6 +133,12 @@ function update(delta) {
     coins = coins.filter(coin => {
         if (rectCollision(playerRect, { x: coin.x, y: coin.y, width: 20, height: 20 })) {
             score += 5;
+            // Spawn "KEK" at random position
+            keks.push({
+                x: Math.floor(Math.random() * (BASE_WIDTH - 50)),
+                y: Math.floor(Math.random() * (BASE_HEIGHT - 30)),
+                expiry: timestamp + KEK_DURATION
+            });
             return false;
         }
         return true;
@@ -132,7 +146,7 @@ function update(delta) {
     if (player.y < 0 || player.y + player.height > BASE_HEIGHT) gameOver = true;
 }
 
-function draw() {
+function draw(timestamp) {
     ctx.clearRect(0, 0, BASE_WIDTH, BASE_HEIGHT);
     // Background
     if (bgImg.complete) {
@@ -148,9 +162,7 @@ function draw() {
         const bottomY = pillar.topHeight + PILLAR_GAP;
         const bottomHeight = BASE_HEIGHT - bottomY;
         if (pillarImg.complete) {
-            // Top pillar: Scale full 236x600 to 20x(topHeight)
             ctx.drawImage(pillarImg, 0, 0, 236, 600, pillar.x, 0, PILLAR_WIDTH, pillar.topHeight);
-            // Bottom pillar: Scale full 236x600 to 20x(bottomHeight), flip vertically
             ctx.save();
             ctx.scale(1, -1);
             ctx.drawImage(pillarImg, 0, 0, 236, 600, pillar.x, -bottomY - bottomHeight, PILLAR_WIDTH, bottomHeight);
@@ -180,6 +192,13 @@ function draw() {
         ctx.fillRect(player.x, player.y, PLAYER_SIZE, PLAYER_SIZE);
     }
 
+    // KEK popups
+    ctx.fillStyle = "limegreen";
+    ctx.font = "30px Arial";
+    keks.forEach(kek => {
+        ctx.fillText("KEK", kek.x, kek.y);
+    });
+
     // Score
     ctx.fillStyle = "red";
     ctx.font = "20px Arial";
@@ -203,8 +222,10 @@ function resetGame() {
     player.vel = 0;
     pillars = [{ x: BASE_WIDTH, topHeight: Math.floor(Math.random() * (BASE_HEIGHT - PILLAR_GAP - 20)) + 20 }];
     coins = [];
+    keks = [];
     score = 0;
     gameOver = false;
+    lastPillarX = BASE_WIDTH;
 }
 
 // Start the game
