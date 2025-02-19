@@ -2,18 +2,24 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Kekius Maximus: Pillars of Rome</title>
     <style>
-        canvas {
-            border: 1px solid black;
-        }
         body {
+            margin: 0;
+            padding: 0;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            margin: 0;
             background-color: #f0f0f0;
+            overflow: hidden;
+        }
+        #gameCanvas {
+            border: 1px solid black;
+            max-width: 100%;
+            max-height: 100vh;
+            touch-action: none; /* Prevents scrolling/zooming on touch */
         }
     </style>
 </head>
