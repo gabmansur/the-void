@@ -25,6 +25,8 @@ const namePrompt = document.getElementById("namePrompt");
 const nameInput = document.getElementById("nameInput");
 const startButton = document.getElementById("startButton");
 
+console.log("DOM elements loaded:", { canvas, namePrompt, nameInput, startButton });
+
 // Game constants
 const BASE_WIDTH = 612;
 const BASE_HEIGHT = 367;
@@ -92,6 +94,7 @@ leaderboardRef.on("value", (snapshot) => {
 
 // Name prompt
 startButton.addEventListener("click", () => {
+    console.log("Start button clicked");
     playerName = nameInput.value.trim() || "Anonymous";
     highScore = parseInt(localStorage.getItem(`highScore_${playerName}`)) || 0;
     console.log("Starting game for:", playerName, "High Score:", highScore);
@@ -122,6 +125,7 @@ canvas.addEventListener("touchstart", (e) => {
 // Game loop
 let lastTime = 0;
 function gameLoop(timestamp) {
+    console.log("Game loop running at timestamp:", timestamp);
     if (!lastTime) lastTime = timestamp;
     const delta = Math.min((timestamp - lastTime) / 16.67, 2);
     lastTime = timestamp;
