@@ -6,17 +6,17 @@ const BASE_WIDTH = 612;
 const BASE_HEIGHT = 367;
 const GRAVITY = 0.5;
 const JUMP = -8;
-const PILLAR_WIDTH = 30;  // Smaller pillars
-const PILLAR_GAP = 100;   // Adjusted gap for smaller Kekius
+const PILLAR_WIDTH = 20;  // Smaller pillars
+const PILLAR_GAP = 80;    // Adjusted gap for smaller Kekius
 const PILLAR_SPEED = 4;
 const BG_SPEED = 1.5;
-const PLAYER_SIZE = 40;   // Smaller Kekius
+const PLAYER_SIZE = 24;   // Smaller Kekius
 
 // Load images (adjust paths)
 const playerImg = new Image();
-playerImg.src = "image/kekius.png"; // 40x40
+playerImg.src = "image/kekius.png"; // 24x24
 const pillarImg = new Image();
-pillarImg.src = "image/pillar.png"; // 30x367
+pillarImg.src = "image/pillar.png"; // 20x367 (will crop)
 const coinImg = new Image();
 coinImg.src = "image/coin.png"; // 20x20
 const bgImg = new Image();
@@ -43,7 +43,7 @@ let player = {
     width: PLAYER_SIZE,
     height: PLAYER_SIZE
 };
-let pillars = [{ x: BASE_WIDTH, topHeight: Math.floor(Math.random() * (BASE_HEIGHT - PILLAR_GAP - 30)) + 30 }];
+let pillars = [{ x: BASE_WIDTH, topHeight: Math.floor(Math.random() * (BASE_HEIGHT - PILLAR_GAP - 20)) + 20 }];
 let coins = [];
 let bgX = 0;
 let score = 0;
@@ -99,7 +99,7 @@ function update(delta) {
         score++;
     }
     if (Math.random() < 0.01 * delta) {
-        pillars.push({ x: BASE_WIDTH, topHeight: Math.floor(Math.random() * (BASE_HEIGHT - PILLAR_GAP - 30)) + 30 });
+        pillars.push({ x: BASE_WIDTH, topHeight: Math.floor(Math.random() * (BASE_HEIGHT - PILLAR_GAP - 20)) + 20 });
     }
 
     // Coins
@@ -108,7 +108,7 @@ function update(delta) {
     });
     coins = coins.filter(coin => coin.x > -20);
     if (Math.random() < 0.02 * delta) {
-        coins.push({ x: BASE_WIDTH, y: Math.floor(Math.random() * (BASE_HEIGHT - 60)) + 30 });
+        coins.push({ x: BASE_WIDTH, y: Math.floor(Math.random() * (BASE_HEIGHT - 40)) + 20 });
     }
 
     // Collisions
@@ -141,8 +141,9 @@ function draw() {
     pillars.forEach(pillar => {
         const bottomY = pillar.topHeight + PILLAR_GAP;
         const bottomHeight = BASE_HEIGHT - bottomY;
+        // Crop pillar image to fit top and bottom
         ctx.drawImage(pillarImg, 0, 0, PILLAR_WIDTH, pillar.topHeight, pillar.x, 0, PILLAR_WIDTH, pillar.topHeight);
-        ctx.drawImage(pillarImg, 0, 0, PILLAR_WIDTH, bottomHeight, pillar.x, bottomY, PILLAR_WIDTH, bottomHeight);
+        ctx.drawImage(pillarImg, 0, BASE_HEIGHT - bottomHeight, PILLAR_WIDTH, bottomHeight, pillar.x, bottomY, PILLAR_WIDTH, bottomHeight);
     });
 
     // Coins
@@ -153,12 +154,12 @@ function draw() {
 
     // Score
     ctx.fillStyle = "red";
-    ctx.font = "30px Arial";
-    ctx.fillText(`Score: ${score}`, 10, 30);
+    ctx.font = "20px Arial"; // Smaller font for scale
+    ctx.fillText(`Score: ${score}`, 10, 20);
 
     // Game Over
     if (gameOver) {
-        ctx.fillText("Vae Victis! Tap or Press R to Retry", BASE_WIDTH / 2 - 150, BASE_HEIGHT / 2);
+        ctx.fillText("Vae Victis! Tap or Press R to Retry", BASE_WIDTH / 2 - 120, BASE_HEIGHT / 2);
     }
 }
 
@@ -172,7 +173,7 @@ function rectCollision(rect1, rect2) {
 function resetGame() {
     player.y = BASE_HEIGHT / 2;
     player.vel = 0;
-    pillars = [{ x: BASE_WIDTH, topHeight: Math.floor(Math.random() * (BASE_HEIGHT - PILLAR_GAP - 30)) + 30 }];
+    pillars = [{ x: BASE_WIDTH, topHeight: Math.floor(Math.random() * (BASE_HEIGHT - PILLAR_GAP - 20)) + 20 }];
     coins = [];
     score = 0;
     gameOver = false;
