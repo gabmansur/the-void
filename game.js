@@ -1,4 +1,5 @@
 // Your Firebase configuration
+/*
 const firebaseConfig = {
     apiKey: "AIzaSyCnllqG2Q3b3ZoBcZKm7c5Ob-LUrKRTaH4",
     authDomain: "flappy-kekius.firebaseapp.com",
@@ -18,6 +19,7 @@ try {
 }
 const db = firebase.database();
 const leaderboardRef = db.ref("leaderboard");
+*/
 
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
