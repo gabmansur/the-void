@@ -2,37 +2,26 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kekius Maximus: Pillars of Rome</title>
     <style>
         body {
             margin: 0;
-            padding: 0;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background-color: #f0f0f0;
+            background-color: #000;
             overflow: hidden;
         }
-        #gameCanvas {
-            border: 1px solid black;
-            max-width: 100%;
-            max-height: 100vh;
-            touch-action: none;
-            display: none;
-        }
         #namePrompt {
-            position: absolute;
-            background: rgba(0, 0, 0, 0.8);
-            color: white;
-            padding: 20px;
-            border-radius: 10px;
+            display: block;
             text-align: center;
+            color: white;
         }
         #nameInput {
-            margin: 10px;
             padding: 5px;
+            margin: 10px;
             font-size: 16px;
         }
         #startButton {
@@ -40,19 +29,27 @@
             font-size: 16px;
             cursor: pointer;
         }
+        #gameCanvas {
+            display: none;
+        }
     </style>
-    <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js"></script>
 </head>
 <body>
-    <canvas id="gameCanvas" width="612" height="367"></canvas>
     <div id="namePrompt">
-        <h2>Enter Your Name</h2>
-        <input type="text" id="nameInput" maxlength="20" placeholder="Your Name">
+        <h1>Kekius Maximus: Pillars of Rome</h1>
+        <input type="text" id="nameInput" placeholder="Enter your name">
         <br>
         <button id="startButton">Start Game</button>
     </div>
+    <canvas id="gameCanvas"></canvas>
+
+    <!-- Load Firebase SDKs (commented out if testing without Firebase) -->
+    <!--
+    <script src="https://www.gstatic.com/firebasejs/9.6.11/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.11/firebase-database.js"></script>
+    -->
+
+    <!-- Load your game.js -->
     <script src="game.js"></script>
 </body>
 </html>
