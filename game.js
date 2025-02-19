@@ -6,17 +6,17 @@ const BASE_WIDTH = 612;
 const BASE_HEIGHT = 367;
 const GRAVITY = 0.5;
 const JUMP = -8;
-const PILLAR_WIDTH = 20;  // Smaller pillars
-const PILLAR_GAP = 80;    // Adjusted gap for smaller Kekius
+const PILLAR_WIDTH = 20;
+const PILLAR_GAP = 80;
 const PILLAR_SPEED = 4;
 const BG_SPEED = 1.5;
-const PLAYER_SIZE = 24;   // Smaller Kekius
+const PLAYER_SIZE = 16;
 
-// Load images (adjust paths)
+// Load images from image/ folder
 const playerImg = new Image();
-playerImg.src = "image/kekius.png"; // 24x24
+playerImg.src = "image/kekius.png"; // 16x16
 const pillarImg = new Image();
-pillarImg.src = "image/pillar.png"; // 20x367 (will crop)
+pillarImg.src = "image/pillar.png"; // 20x367
 const coinImg = new Image();
 coinImg.src = "image/coin.png"; // 20x20
 const bgImg = new Image();
@@ -134,27 +134,51 @@ function update(delta) {
 function draw() {
     ctx.clearRect(0, 0, BASE_WIDTH, BASE_HEIGHT);
     // Background
-    ctx.drawImage(bgImg, bgX, 0, BASE_WIDTH * 2, BASE_HEIGHT);
-    ctx.drawImage(bgImg, bgX + BASE_WIDTH, 0, BASE_WIDTH * 2, BASE_HEIGHT);
+    if (bgImg.complete) {
+        ctx.drawImage(bgImg, bgX, 0, BASE_WIDTH * 2, BASE_HEIGHT);
+        ctx.drawImage(bgImg, bgX + BASE_WIDTH, 0, BASE_WIDTH * 2, BASE_HEIGHT);
+    } else {
+        ctx.fillStyle = "white";
+        ctx.fillRect(0, 0, BASE_WIDTH, BASE_HEIGHT);
+    }
 
     // Pillars
     pillars.forEach(pillar => {
         const bottomY = pillar.topHeight + PILLAR_GAP;
         const bottomHeight = BASE_HEIGHT - bottomY;
-        // Crop pillar image to fit top and bottom
-        ctx.drawImage(pillarImg, 0, 0, PILLAR_WIDTH, pillar.topHeight, pillar.x, 0, PILLAR_WIDTH, pillar.topHeight);
-        ctx.drawImage(pillarImg, 0, BASE_HEIGHT - bottomHeight, PILLAR_WIDTH, bottomHeight, pillar.x, bottomY, PILLAR_WIDTH, bottomHeight);
+        if (pillarImg.complete) {
+            // Draw top pillar
+            ctx.drawImage(pillarImg, 0, 0, PILLAR_WIDTH, pillar.topHeight, pillar.x, 0, PILLAR_WIDTH, pillar.topHeight);
+            // Draw bottom pillar
+            ctx.drawImage(pillarImg, 0, BASE_HEIGHT - bottomHeight, PILLAR_WIDTH, bottomHeight, pillar.x, bottomY, PILLAR_WIDTH, bottomHeight);
+        } else {
+            ctx.fillStyle = "blue";
+            ctx.fillRect(pillar.x, 0, PILLAR_WIDTH, pillar.topHeight);
+            ctx.fillRect(pillar.x, bottomY, PILLAR_WIDTH, bottomHeight);
+        }
     });
 
     // Coins
-    coins.forEach(coin => ctx.drawImage(coinImg, coin.x, coin.y));
+    coins.forEach(coin => {
+        if (coinImg.complete) {
+            ctx.drawImage(coinImg, coin.x, coin.y);
+        } else {
+            ctx.fillStyle = "yellow";
+            ctx.fillRect(coin.x, coin.y, 20, 20);
+        }
+    });
 
     // Player
-    ctx.drawImage(playerImg, player.x, player.y);
+    if (playerImg.complete) {
+        ctx.drawImage(playerImg, player.x, player.y, PLAYER_SIZE, PLAYER_SIZE);
+    } else {
+        ctx.fillStyle = "green";
+        ctx.fillRect(player.x, player.y, PLAYER_SIZE, PLAYER_SIZE);
+    }
 
     // Score
     ctx.fillStyle = "red";
-    ctx.font = "20px Arial"; // Smaller font for scale
+    ctx.font = "20px Arial";
     ctx.fillText(`Score: ${score}`, 10, 20);
 
     // Game Over
@@ -181,3 +205,4 @@ function resetGame() {
 
 // Start the game
 playerImg.onload = () => requestAnimationFrame(gameLoop);
+setTimeout(() => requestAnimationFrame(gameLoop), 1000); // Fallback
