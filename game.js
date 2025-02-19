@@ -13,13 +13,13 @@ const BG_SPEED = 1.5;
 
 // Load images (adjust paths to your hosted/local files)
 const playerImg = new Image();
-playerImg.src = "kekius.png"; // 60x60
+playerImg.src = "image/kekius.png"; // 60x60
 const pillarImg = new Image();
-pillarImg.src = "pillar.png"; // 50x367
+pillarImg.src = "image/pillar.png"; // 50x367
 const coinImg = new Image();
-coinImg.src = "coin.png"; // 20x20
+coinImg.src = "image/coin.png"; // 20x20
 const bgImg = new Image();
-bgImg.src = "rome_bg.png"; // 1224x367
+bgImg.src = "image/rome_bg.png"; // 1224x367
 
 // Responsive scaling
 let scale = 1;
