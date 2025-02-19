@@ -1,24 +1,27 @@
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
+const namePrompt = document.getElementById("namePrompt");
+const nameInput = document.getElementById("nameInput");
+const startButton = document.getElementById("startButton");
 
 // Game constants
 const BASE_WIDTH = 612;
 const BASE_HEIGHT = 367;
 const GRAVITY = 0.5;
-const JUMP = -5;
+const JUMP = -8;
 const PILLAR_WIDTH = 20;
-const PILLAR_GAP = 100;
+const PILLAR_GAP = 80;
 const PILLAR_SPEED = 4;
 const PILLAR_SPACING = 300;
 const BG_SPEED = 1.5;
 const PLAYER_SIZE = 32;
-const KEK_DURATION = 500; // 0.5 seconds in milliseconds
+const KEK_DURATION = 500;
 
 // Load images from image/ folder
 const playerImg = new Image();
-playerImg.src = "image/kekius.png"; // 156x156 source, render at 32x32
+playerImg.src = "image/kekius.png"; // 156x156
 const pillarImg = new Image();
-pillarImg.src = "image/pillar.png"; // 236x600 source, render at 20xdynamic
+pillarImg.src = "image/pillar.png"; // 236x600
 const coinImg = new Image();
 coinImg.src = "image/coin.png"; // 20x20
 const bgImg = new Image();
@@ -35,7 +38,6 @@ function resizeCanvas() {
     ctx.scale(scale, scale);
 }
 window.addEventListener("resize", resizeCanvas);
-resizeCanvas();
 
 // Game objects
 let player = {
@@ -47,11 +49,26 @@ let player = {
 };
 let pillars = [{ x: BASE_WIDTH, topHeight: Math.floor(Math.random() * (BASE_HEIGHT - PILLAR_GAP - 20)) + 20 }];
 let coins = [];
-let keks = []; // Array for "KEK" popups
+let keks = [];
 let bgX = 0;
 let score = 0;
+let highScore = 0;
 let gameOver = false;
 let lastPillarX = BASE_WIDTH;
+let playerName = "";
+
+// Leaderboard
+let leaderboard = JSON.parse(localStorage.getItem("leaderboard")) || [];
+
+// Name prompt
+startButton.addEventListener("click", () => {
+    playerName = nameInput.value.trim() || "Anonymous";
+    highScore = parseInt(localStorage.getItem(`highScore_${playerName}`)) || 0;
+    namePrompt.style.display = "none";
+    canvas.style.display = "block";
+    resizeCanvas();
+    requestAnimationFrame(gameLoop);
+});
 
 // Controls
 document.addEventListener("keydown", (e) => {
@@ -127,13 +144,13 @@ function update(delta, timestamp) {
         if (rectCollision(playerRect, { x: pillar.x, y: 0, width: PILLAR_WIDTH, height: pillar.topHeight }) ||
             rectCollision(playerRect, { x: pillar.x, y: bottomY, width: PILLAR_WIDTH, height: bottomHeight })) {
             gameOver = true;
+            updateHighScoreAndLeaderboard();
             console.log(`Pillar: Top 0-${pillar.topHeight}, Gap ${pillar.topHeight}-${bottomY}, Bottom ${bottomY}-${BASE_HEIGHT}`);
         }
     });
     coins = coins.filter(coin => {
         if (rectCollision(playerRect, { x: coin.x, y: coin.y, width: 20, height: 20 })) {
             score += 5;
-            // Spawn "KEK" at random position
             keks.push({
                 x: Math.floor(Math.random() * (BASE_WIDTH - 50)),
                 y: Math.floor(Math.random() * (BASE_HEIGHT - 30)),
@@ -143,7 +160,10 @@ function update(delta, timestamp) {
         }
         return true;
     });
-    if (player.y < 0 || player.y + player.height > BASE_HEIGHT) gameOver = true;
+    if (player.y < 0 || player.y + player.height > BASE_HEIGHT) {
+        gameOver = true;
+        updateHighScoreAndLeaderboard();
+    }
 }
 
 function draw(timestamp) {
@@ -199,14 +219,23 @@ function draw(timestamp) {
         ctx.fillText("KEK", kek.x, kek.y);
     });
 
-    // Score
+    // Score and High Score
     ctx.fillStyle = "red";
     ctx.font = "20px Arial";
     ctx.fillText(`Score: ${score}`, 10, 20);
+    ctx.fillText(`High Score: ${highScore}`, 10, 45);
 
-    // Game Over
+    // Game Over and Leaderboard
     if (gameOver) {
-        ctx.fillText("Vae Victis! Tap or Press R to Retry", BASE_WIDTH / 2 - 120, BASE_HEIGHT / 2);
+        ctx.fillStyle = "white";
+        ctx.fillRect(BASE_WIDTH / 2 - 150, BASE_HEIGHT / 2 - 100, 300, 200);
+        ctx.fillStyle = "red";
+        ctx.fillText("Vae Victis! Tap or Press R to Retry", BASE_WIDTH / 2 - 140, BASE_HEIGHT / 2 - 70);
+        ctx.font = "16px Arial";
+        ctx.fillText("Leaderboard:", BASE_WIDTH / 2 - 40, BASE_HEIGHT / 2 - 40);
+        leaderboard.slice(0, 5).forEach((entry, i) => {
+            ctx.fillText(`${i + 1}. ${entry.name}: ${entry.score}`, BASE_WIDTH / 2 - 80, BASE_HEIGHT / 2 - 20 + i * 20);
+        });
     }
 }
 
@@ -215,6 +244,17 @@ function rectCollision(rect1, rect2) {
            rect1.x + rect1.width > rect2.x &&
            rect1.y < rect2.y + rect2.height &&
            rect1.y + rect1.height > rect2.y;
+}
+
+function updateHighScoreAndLeaderboard() {
+    if (score > highScore) {
+        highScore = score;
+        localStorage.setItem(`highScore_${playerName}`, highScore);
+    }
+    leaderboard.push({ name: playerName, score: score });
+    leaderboard.sort((a, b) => b.score - a.score); // Descending order
+    leaderboard = leaderboard.slice(0, 5); // Top 5
+    localStorage.setItem("leaderboard", JSON.stringify(leaderboard));
 }
 
 function resetGame() {
@@ -227,7 +267,3 @@ function resetGame() {
     gameOver = false;
     lastPillarX = BASE_WIDTH;
 }
-
-// Start the game
-playerImg.onload = () => requestAnimationFrame(gameLoop);
-setTimeout(() => requestAnimationFrame(gameLoop), 1000);
