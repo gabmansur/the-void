@@ -12,7 +12,7 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background-color: #f0f0f0;
+            background-color: #000000;
             overflow: hidden;
         }
         #gameCanvas {
@@ -20,7 +20,7 @@
             max-width: 100%;
             max-height: 100vh;
             touch-action: none;
-            display: none; /* Hidden until name entered */
+            display: none;
         }
         #namePrompt {
             position: absolute;
@@ -41,6 +41,9 @@
             cursor: pointer;
         }
     </style>
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.11/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.11/firebase-database.js"></script>
 </head>
 <body>
     <canvas id="gameCanvas" width="612" height="367"></canvas>
