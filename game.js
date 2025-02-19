@@ -10,7 +10,12 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-firebase.initializeApp(firebaseConfig);
+try {
+    firebase.initializeApp(firebaseConfig);
+    console.log("Firebase initialized successfully");
+} catch (error) {
+    console.error("Firebase initialization error:", error);
+}
 const db = firebase.database();
 const leaderboardRef = db.ref("leaderboard");
 
@@ -52,6 +57,7 @@ function resizeCanvas() {
     canvas.width = BASE_WIDTH * scale;
     canvas.height = BASE_HEIGHT * scale;
     ctx.scale(scale, scale);
+    console.log("Canvas resized: ", canvas.width, canvas.height);
 }
 window.addEventListener("resize", resizeCanvas);
 
@@ -79,12 +85,16 @@ leaderboardRef.on("value", (snapshot) => {
     const data = snapshot.val();
     leaderboard = data ? Object.values(data) : [];
     leaderboard.sort((a, b) => b.score - a.score);
+    console.log("Leaderboard updated:", leaderboard);
+}, (error) => {
+    console.error("Leaderboard fetch error:", error);
 });
 
 // Name prompt
 startButton.addEventListener("click", () => {
     playerName = nameInput.value.trim() || "Anonymous";
     highScore = parseInt(localStorage.getItem(`highScore_${playerName}`)) || 0;
+    console.log("Starting game for:", playerName, "High Score:", highScore);
     namePrompt.style.display = "none";
     canvas.style.display = "block";
     resizeCanvas();
@@ -267,14 +277,13 @@ function rectCollision(rect1, rect2) {
 }
 
 function updateHighScoreAndLeaderboard() {
-    // Local high score
     if (score > highScore) {
         highScore = score;
         localStorage.setItem(`highScore_${playerName}`, highScore);
     }
-    // Global leaderboard
     const leaderboardEntry = { name: playerName, score: score };
     leaderboardRef.push(leaderboardEntry);
+    console.log("Submitted to leaderboard:", leaderboardEntry);
 }
 
 function resetGame() {
@@ -286,4 +295,5 @@ function resetGame() {
     score = 0;
     gameOver = false;
     lastPillarX = BASE_WIDTH;
+    console.log("Game reset");
 }
