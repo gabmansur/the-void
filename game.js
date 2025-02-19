@@ -10,13 +10,13 @@ const PILLAR_WIDTH = 20;
 const PILLAR_GAP = 80;
 const PILLAR_SPEED = 4;
 const BG_SPEED = 1.5;
-const PLAYER_SIZE = 16;
+const PLAYER_SIZE = 32;
 
 // Load images from image/ folder
 const playerImg = new Image();
-playerImg.src = "image/kekius.png"; // 16x16
+playerImg.src = "image/kekius.png"; // 156x156 source, render at 32x32
 const pillarImg = new Image();
-pillarImg.src = "image/pillar.png"; // 20x367
+pillarImg.src = "image/pillar.png"; // 236x600 source, render at 20x367
 const coinImg = new Image();
 coinImg.src = "image/coin.png"; // 20x20
 const bgImg = new Image();
@@ -119,6 +119,7 @@ function update(delta) {
         if (rectCollision(playerRect, { x: pillar.x, y: 0, width: PILLAR_WIDTH, height: pillar.topHeight }) ||
             rectCollision(playerRect, { x: pillar.x, y: bottomY, width: PILLAR_WIDTH, height: bottomHeight })) {
             gameOver = true;
+            console.log(`Pillar: Top 0-${pillar.topHeight}, Gap ${pillar.topHeight}-${bottomY}, Bottom ${bottomY}-${BASE_HEIGHT}`);
         }
     });
     coins = coins.filter(coin => {
@@ -147,10 +148,13 @@ function draw() {
         const bottomY = pillar.topHeight + PILLAR_GAP;
         const bottomHeight = BASE_HEIGHT - bottomY;
         if (pillarImg.complete) {
-            // Draw top pillar
-            ctx.drawImage(pillarImg, 0, 0, PILLAR_WIDTH, pillar.topHeight, pillar.x, 0, PILLAR_WIDTH, pillar.topHeight);
-            // Draw bottom pillar
-            ctx.drawImage(pillarImg, 0, BASE_HEIGHT - bottomHeight, PILLAR_WIDTH, bottomHeight, pillar.x, bottomY, PILLAR_WIDTH, bottomHeight);
+            // Top pillar: Scale full 236x600 to 20x(topHeight)
+            ctx.drawImage(pillarImg, 0, 0, 236, 600, pillar.x, 0, PILLAR_WIDTH, pillar.topHeight);
+            // Bottom pillar: Scale full 236x600 to 20x(bottomHeight), flip vertically
+            ctx.save();
+            ctx.scale(1, -1);
+            ctx.drawImage(pillarImg, 0, 0, 236, 600, pillar.x, -bottomY - bottomHeight, PILLAR_WIDTH, bottomHeight);
+            ctx.restore();
         } else {
             ctx.fillStyle = "blue";
             ctx.fillRect(pillar.x, 0, PILLAR_WIDTH, pillar.topHeight);
@@ -205,4 +209,4 @@ function resetGame() {
 
 // Start the game
 playerImg.onload = () => requestAnimationFrame(gameLoop);
-setTimeout(() => requestAnimationFrame(gameLoop), 1000); // Fallback
+setTimeout(() => requestAnimationFrame(gameLoop), 1000);
