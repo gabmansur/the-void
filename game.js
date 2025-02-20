@@ -17,9 +17,14 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     // Initialize Firebase
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.database();
-    const leaderboardRef = db.ref("leaderboard");
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+    import { getDatabase, ref, push, onValue } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js";
+    
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+    const leaderboardRef = ref(db, "leaderboard");
+
 
     // Game constants
     const BASE_WIDTH = 612;
